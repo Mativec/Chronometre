@@ -74,23 +74,42 @@ int nb_ms_vers_heures(int nb_ms) {
 
 
 int main(void) {
+    initscr();
+    cbreak();
+    noecho();
+    nodelay(stdscr, TRUE);
+    curs_set(FALSE);
+    clear();
+    /*start_color(); */
+    struct timeval temps_debut, temps_fin;
+    int pause, duree_totale, touche;
     
-    /* Variables de recuperation du temps. */
-    struct timeval debut_prog, actuel;
-
-    /* Variables pour recueillir les mesures. */
-    int chrono;
-
-    /* Mesure de temps initiale. */
-    gettimeofday(&debut_prog, NULL);
-    chrono = 0;
-
+    
+    gettimeofday(&temps_debut, NULL);
+    duree_totale = 0;
+    pause = 1; /* 1 = en pause / 0 = en marche */
+    
 
     while(1) {
-        gettimeofday(&actuel, NULL);
-        chrono = intervalle(debut_prog, actuel);
-        printf("%2d : %2d : %2d : %2d\n", nb_ms_vers_heures(chrono), nb_ms_vers_minutes(chrono), nb_ms_vers_secondes(chrono), nb_ms_vers_centiemes(chrono));
-        usleep(500000);
+        if(touche == ' ') {
+            if (pause) {
+                gettimeofday(&temps_debut, NULL);
+                pause--;
+            }   
+            else {
+                pause++;
+            }
+        }
+        usleep(50000);
+        if (!pause) {
+            gettimeofday(&temps_fin, NULL);
+            duree_totale += intervalle(temps_debut, temps_fin);
+            temps_debut.tv_sec = temps_fin.tv_sec;
+            temps_debut.tv_usec = temps_fin.tv_usec;
+        }
+        mvprintw(0, 0, "%2d : %2d : %2d : %2d\n", nb_ms_vers_heures(duree_totale), nb_ms_vers_minutes(duree_totale), nb_ms_vers_secondes(duree_totale), nb_ms_vers_centiemes(duree_totale));
+        touche = getch();
     }
+    endwin();
     return 0;
 }

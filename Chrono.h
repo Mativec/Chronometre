@@ -1,7 +1,7 @@
 /**
- * @file Chrono.c
+ * @file Chrono.h
  * @author TWARDAWA Yanis & VECCHIO Matias
- * @brief Main du programme pour le TP2 de ProgC
+ * @brief Headers du module Chrono
  * @version 0.1
  * @date 2022-02-18
  * 
@@ -9,11 +9,29 @@
  * 
  */
 
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <ncurses.h>
+
+typedef struct chrono {
+    int etat; /*1 ou 0 */
+    int duree_totale; /*En millisecondes */
+    int avertissement;
+    int dernier_tour;
+    int nb_tours;
+    int tours[6];
+} Chronometre;
+
+/**
+ * @brief Initialise un chronometre et le renvoie.
+ * 
+ * @return Chronometre: chronometre initialisé ou NULL.
+ */
+Chronometre initialiser_chronometre();
 
 
 /**
@@ -24,9 +42,30 @@
  * @param fin le temps en microseconde
  * @return int 
  */
-int intervalle(struct timeval debut, struct timeval fin){
-    return ((fin.tv_sec - debut.tv_sec) * 1000) + ((fin.tv_usec - debut.tv_usec) / 1000);
-}
+int intervalle(struct timeval debut, struct timeval fin);
+
+
+/**
+ * @brief affiche la durée d'un chronometre donnée
+ * avec le module ncurses  
+ * 
+ * @param y 
+ * @param x 
+ * @param nb_ms 
+ */
+void affiche_duree(int y, int x, int nb_ms);
+
+
+/**
+ * @brief fonction qui renvoie le tmeps entre deux temps donné en 
+ * paramètre, en milliseconde
+ * 
+ * @param debut le temps en microseconde
+ * @param fin le temps en microseconde
+ * @return int 
+ */
+int intervalle(struct timeval debut, struct timeval fin);
+
 
 
 /**
@@ -35,9 +74,7 @@ int intervalle(struct timeval debut, struct timeval fin){
  * @param nb_ms: nombre de millisecondes. 
  * @return int: nombre de millisecondes convertis en centieme de secondes.
  */
-int nb_ms_vers_centiemes(int nb_ms) {
-    return (nb_ms / 10) % 100;
-}
+int nb_ms_vers_centiemes(int nb_ms);
 
 
 /**
@@ -46,9 +83,7 @@ int nb_ms_vers_centiemes(int nb_ms) {
  * @param nb_ms: nombre de millisecondes.
  * @return int: nombre de millisecondes convertis en secondes.
  */
-int nb_ms_vers_secondes(int nb_ms){
-    return (nb_ms / 1000) % 60;
-}
+int nb_ms_vers_secondes(int nb_ms);
 
 
 /**
@@ -57,9 +92,7 @@ int nb_ms_vers_secondes(int nb_ms){
  * @param nb_ms: nombre de millisecondes.
  * @return int: nombre de millisecondes convertis en minutes.
  */
-int nb_ms_vers_minutes(int nb_ms) {
-    return (nb_ms / (1000 * 60)) % 60;
-}
+int nb_ms_vers_minutes(int nb_ms);
 
 
 /**
@@ -68,29 +101,4 @@ int nb_ms_vers_minutes(int nb_ms) {
  * @param nb_ms: nombre de millisecondes.
  * @return int: nombre de millisecondes convertis en heures.
  */
-int nb_ms_vers_heures(int nb_ms) {
-    return (nb_ms / (1000 * 60 * 60));
-}
-
-
-int main(void) {
-    
-    /* Variables de recuperation du temps. */
-    struct timeval debut_prog, actuel;
-
-    /* Variables pour recueillir les mesures. */
-    int chrono;
-
-    /* Mesure de temps initiale. */
-    gettimeofday(&debut_prog, NULL);
-    chrono = 0;
-
-
-    while(1) {
-        gettimeofday(&actuel, NULL);
-        chrono = intervalle(debut_prog, actuel);
-        printf("%2d : %2d : %2d : %2d\n", nb_ms_vers_heures(chrono), nb_ms_vers_minutes(chrono), nb_ms_vers_secondes(chrono), nb_ms_vers_centiemes(chrono));
-        usleep(500000);
-    }
-    return 0;
-}
+int nb_ms_vers_heures(int nb_ms);
