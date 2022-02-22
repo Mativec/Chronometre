@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef __CHRONO__
+#define __CHRONO__
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +19,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <ncurses.h>
+
 
 typedef struct chrono {
     int etat; /*1 ou 0 */
@@ -56,17 +60,6 @@ int intervalle(struct timeval debut, struct timeval fin);
 void affiche_duree(int y, int x, int nb_ms);
 
 
-/**
- * @brief fonction qui renvoie le tmeps entre deux temps donné en 
- * paramètre, en milliseconde
- * 
- * @param debut le temps en microseconde
- * @param fin le temps en microseconde
- * @return int 
- */
-int intervalle(struct timeval debut, struct timeval fin);
-
-
 
 /**
  * @brief Fonction qui renvoie nb_ms en centiemes de secondes.
@@ -102,3 +95,19 @@ int nb_ms_vers_minutes(int nb_ms);
  * @return int: nombre de millisecondes convertis en heures.
  */
 int nb_ms_vers_heures(int nb_ms);
+
+
+/**
+ * @brief Affiche le chronometre dans le terminal.
+ * 
+ * @param chrono 
+ */
+void affiche_interface(Chronometre chrono);
+
+/**
+ * @brief affiche un "flash" dans le chrono
+ * 
+ */
+void afficher_flash();
+
+#endif
