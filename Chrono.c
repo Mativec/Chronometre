@@ -67,15 +67,11 @@ void affiche_duree(int y, int x, int nb_ms){
 
 void affiche_interface(Chronometre chrono){
 
-    int i;
-    char * chaine;
+    int i, cmpt;
     
-    clear();
     mvprintw(0, COLS /2, "== Chronometre ==");
     for(i = 0; i < COLS; i++){
         mvprintw(LINES - 9, i, "-");
-        mvprintw(0, i, "-");
-        mvprintw(LINES - 1, i, "-");
     }
     for(i = 0; i < LINES; i++){
         mvprintw(i, 0, "|");
@@ -87,7 +83,6 @@ void affiche_interface(Chronometre chrono){
     mvaddch(0, COLS - 1, '\\');
     mvaddch(LINES - 1, COLS - 1, '/');
 
-    /*COLS/2 - (strlen(chaine)/2) pour centrer*/
     mvprintw(LINES - 8, 1, "Espace : lancer / mettre en pause");
     mvprintw(LINES - 7, 1, "r      : reinitialiser");
     mvprintw(LINES - 6, 1, "t      : marquer tour");
@@ -96,29 +91,45 @@ void affiche_interface(Chronometre chrono){
     mvprintw(LINES - 3, 1, "F5/F6  : incrementer / decrementer seconde avertissement");
     mvprintw(LINES - 2, 1, "q      : quitter");
 
+
+    mvprintw(LINES - 12, COLS/2 - 8, "         ");
     affiche_duree(LINES - 12, COLS/2, chrono.duree_totale);
     mvprintw(LINES - 10, COLS /2 - 15, "Avertissement : ");
     affiche_duree(LINES - 10, COLS/2, chrono.avertissement);
+
+    if (chrono.nb_tours > 0) {
+        i = LINES - 13;
+        cmpt = 0;
+        while (i > 0 && cmpt < 6) {
+            cmpt ++;
+            if (cmpt < chrono.nb_tours) {
+                mvprintw(i, COLS/2 - 8, "Tours %d:", chrono.nb_tours + 1 - cmpt);
+                affiche_duree(i, COLS/2, chrono.tours[(6 + chrono.dernier_tour - cmpt) % 6]);
+                i--;
+            }
+        }
+    }
 }
 
 
 void afficher_flash(){
     int y, x, i;
+    int couleur;
 
     clear();
 
-    for(i = 0; i <10; i++){
+    couleur = 1;
+    for(i = 0; i <20; i++){
         for(y = 0; y < LINES; y++) {
             for(x = 0; x < COLS; x++) {
-                mvaddch(y, x, "*");
-                attron(COLOR_PAIR(1));
+                mvaddch(y, x, '*');
+                attron(COLOR_PAIR(couleur));
             }
         }
-        attroff(COLOR_PAIR(1));
-        attron(COLOR_PAIR(2));
-        attroff(COLOR_PAIR(2));
+        attroff(COLOR_PAIR(couleur));
         refresh();
-        usleep(5000);
+        usleep(500000);
+        couleur = 3 - couleur;
     }
 }
 

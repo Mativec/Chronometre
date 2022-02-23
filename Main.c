@@ -29,8 +29,8 @@ int main(void) {
     start_color();
     
     fin = 0;
-    init_pair(1, COLOR_BLUE, COLOR_BLUE);
-    init_pair(2, COLOR_RED, COLOR_RED);
+    init_pair(1, COLOR_BLUE, COLOR_BLACK);
+    init_pair(2, COLOR_RED, COLOR_BLACK);
     chrono = initialiser_chronometre();
     gettimeofday(&temps_debut, NULL);
     chrono.avertissement = 25000;
@@ -38,7 +38,7 @@ int main(void) {
 
     while(!fin) {
 
-        if(LINES < 14 || COLS < 58) {
+        if(LINES <= 14 || COLS <= 58) {
             system("echo Fenetre trop petite...");
             fin++;
         }
@@ -54,46 +54,59 @@ int main(void) {
             }
         }
 
-        if (touche == 'q') {
-            fin = 1;
-        }
+        switch (touche) {
+            case 'q' :
+                fin = 1;
+                break;
 
-        if (touche == 'r') {
-            gettimeofday(&temps_debut, NULL);
-            chrono.duree_totale = 0;
-            chrono.etat = 0;
-        }
+            case'r':
+                gettimeofday(&temps_debut, NULL);
+                chrono.duree_totale = 0;
+                chrono.etat = 0;
+                break;
 
-        if (touche == KEY_F(1)){
-            chrono.avertissement = chrono.avertissement + 3600000;
-        }
+            case't':
+                ajouter_tour(&chrono);
+                break;
 
-        if (touche == KEY_F(2)
-            && nb_ms_vers_heures(chrono.avertissement) > 0){
-            chrono.avertissement -= 3600000;
-        }
+            case KEY_F(1):
+                chrono.avertissement = chrono.avertissement + 3600000;
+                break;
 
-        if (touche == KEY_F(3)){
-            chrono.avertissement  += 60000; 
-        }
+            case KEY_F(2):
+                if (nb_ms_vers_heures(chrono.avertissement) > 0) {
+                    chrono.avertissement -= 3600000;
+                }
+                break;
 
-        if (touche == KEY_F(4)
-            && nb_ms_vers_minutes(chrono.avertissement) > 0){
-            chrono.avertissement  -= 60000;
-        }
+            case KEY_F(3):
+                chrono.avertissement  += 60000;
+                break;
+
+            case KEY_F(4):
+                if (nb_ms_vers_minutes(chrono.avertissement) > 0) {
+                    chrono.avertissement  -= 60000;
+                }
+                break;
         
-        if (touche == KEY_F(5)){
-            chrono.avertissement += 1000;
+            case KEY_F(5):
+                chrono.avertissement += 1000;
+                break;
+
+            case KEY_F(6):
+                if (nb_ms_vers_secondes(chrono.avertissement) > 0){
+                    chrono.avertissement -= 1000;
+                }
+                break;
         }
 
-        if (touche == KEY_F(6)
-            && nb_ms_vers_secondes(chrono.avertissement) > 0){
-            chrono.avertissement -= 1000;
-        }
-        
+
         if ((chrono.avertissement <= chrono.duree_totale) 
-            && chrono.duree_totale != 0){
+            && chrono.avertissement != 0 && chrono.etat){
+            chrono.etat--;
             afficher_flash();
+            clear();
+            chrono.avertissement = 0;
         }
 
         usleep(50000);
