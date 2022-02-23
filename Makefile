@@ -4,7 +4,7 @@ CC = gcc
 OBJ = Main.o Chrono.o
 
 
-EXEC: $(OBJ)
+Chrono: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 

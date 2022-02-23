@@ -23,13 +23,17 @@ int main(void) {
     cbreak();
     noecho();
     nodelay(stdscr, TRUE);
+    keypad(stdscr, TRUE);
     curs_set(FALSE);
     clear();
-    /*start_color(); */
+    start_color();
     
     fin = 0;
+    init_pair(1, COLOR_BLUE, COLOR_BLUE);
+    init_pair(2, COLOR_RED, COLOR_RED);
     chrono = initialiser_chronometre();
     gettimeofday(&temps_debut, NULL);
+    chrono.avertissement = 25000;
     
 
     while(!fin) {
@@ -45,9 +49,11 @@ int main(void) {
                 chrono.etat = 0;
             }   
             else {
+                gettimeofday(&temps_debut, NULL);
                 chrono.etat = 1;
             }
         }
+
         if (touche == 'q') {
             fin = 1;
         }
@@ -57,6 +63,39 @@ int main(void) {
             chrono.duree_totale = 0;
             chrono.etat = 0;
         }
+
+        if (touche == KEY_F(1)){
+            chrono.avertissement = chrono.avertissement + 3600000;
+        }
+
+        if (touche == KEY_F(2)
+            && nb_ms_vers_heures(chrono.avertissement) > 0){
+            chrono.avertissement -= 3600000;
+        }
+
+        if (touche == KEY_F(3)){
+            chrono.avertissement  += 60000; 
+        }
+
+        if (touche == KEY_F(4)
+            && nb_ms_vers_minutes(chrono.avertissement) > 0){
+            chrono.avertissement  -= 60000;
+        }
+        
+        if (touche == KEY_F(5)){
+            chrono.avertissement += 1000;
+        }
+
+        if (touche == KEY_F(6)
+            && nb_ms_vers_secondes(chrono.avertissement) > 0){
+            chrono.avertissement -= 1000;
+        }
+        
+        if ((chrono.avertissement <= chrono.duree_totale) 
+            && chrono.duree_totale != 0){
+            afficher_flash();
+        }
+
         usleep(50000);
         if (chrono.etat) {
             gettimeofday(&temps_fin, NULL);
@@ -65,7 +104,6 @@ int main(void) {
             temps_debut.tv_usec = temps_fin.tv_usec;
         }
         affiche_interface(chrono);
-        affiche_duree(LINES/3, COLS/2, chrono.duree_totale);
         touche = getch();
     }
     endwin();

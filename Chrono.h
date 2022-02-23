@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <ncurses.h>
+#include <assert.h>
 
 
 typedef struct chrono {
@@ -109,5 +110,13 @@ void affiche_interface(Chronometre chrono);
  * 
  */
 void afficher_flash();
+
+
+/**
+ * @brief Enregistre le chrono actuel dans un tour.
+ * 
+ * @param chrono 
+ */
+void ajouter_tour(Chronometre *chrono);
 
 #endif
