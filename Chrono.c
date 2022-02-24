@@ -1,7 +1,7 @@
 /**
  * @file ChronoDur.c
  * @author TWARDAWA Yanis & VECCHIO Matias
- * @brief Code du Module ChronoDur
+ * @brief Code du Module Chrono
  * @version 0.1
  * @date 2022-02-18
  * 
@@ -69,6 +69,7 @@ void affiche_interface(Chronometre chrono){
 
     int i, cmpt;
     
+    clear();
     mvprintw(0, COLS /2, "== Chronometre ==");
     for(i = 0; i < COLS; i++){
         mvprintw(LINES - 9, i, "-");
@@ -103,12 +104,13 @@ void affiche_interface(Chronometre chrono){
         while (i > 0 && cmpt < 6) {
             cmpt ++;
             if (cmpt < chrono.nb_tours) {
-                mvprintw(i, COLS/2 - 8, "Tours %d:", chrono.nb_tours + 1 - cmpt);
+                mvprintw(i, COLS/2 - 8, "Tours %d:", chrono.nb_tours - cmpt);
                 affiche_duree(i, COLS/2, chrono.tours[(6 + chrono.dernier_tour - cmpt) % 6]);
                 i--;
             }
         }
     }
+    refresh();
 }
 
 
@@ -119,7 +121,7 @@ void afficher_flash(){
     clear();
 
     couleur = 1;
-    for(i = 0; i <20; i++){
+    for(i = 0; i <10; i++){
         for(y = 0; y < LINES; y++) {
             for(x = 0; x < COLS; x++) {
                 mvaddch(y, x, '*');
@@ -137,7 +139,7 @@ void afficher_flash(){
 void ajouter_tour(Chronometre *chrono) {
     assert(chrono != NULL);
     
-    chrono->nb_tours++;
-    chrono->dernier_tour = (chrono->dernier_tour + 1) % 6;
     chrono->tours[chrono->dernier_tour] = chrono->duree_totale;
+    chrono->dernier_tour = (chrono->dernier_tour + 1) % 6;
+    chrono->nb_tours++;
 }

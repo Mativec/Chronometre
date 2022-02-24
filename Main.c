@@ -1,7 +1,7 @@
 /**
  * @file Main.c
  * @author TWARDAWA Yanis & VECCHIO Matias
- * @brief 
+ * @brief Programme pour l'exercice 3 du TP3 de Prog C
  * @version 0.1
  * @date 2022-02-22
  * 
@@ -38,6 +38,8 @@ int main(void) {
 
     while(!fin) {
 
+        affiche_interface(chrono);
+        
         if(LINES <= 14 || COLS <= 58) {
             system("echo Fenetre trop petite...");
             fin++;
@@ -116,7 +118,7 @@ int main(void) {
             temps_debut.tv_sec = temps_fin.tv_sec;
             temps_debut.tv_usec = temps_fin.tv_usec;
         }
-        affiche_interface(chrono);
+        
         touche = getch();
     }
     endwin();
