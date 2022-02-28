@@ -2,7 +2,6 @@
  * @file Main.c
  * @author TWARDAWA Yanis & VECCHIO Matias
  * @brief Programme pour l'exercice 3 du TP3 de Prog C
- * @version 0.1
  * @date 2022-02-22
  * 
  * @copyright Copyright (c) 2022

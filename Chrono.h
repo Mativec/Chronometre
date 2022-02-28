@@ -2,7 +2,6 @@
  * @file Chrono.h
  * @author TWARDAWA Yanis & VECCHIO Matias
  * @brief En-tête du module Chrono
- * @version 0.1
  * @date 2022-02-18
  * 
  * @copyright Copyright (c) 2022

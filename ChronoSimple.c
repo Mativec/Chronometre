@@ -2,7 +2,6 @@
  * @file Chrono.c
  * @author TWARDAWA Yanis & VECCHIO Matias
  * @brief Programme pour l'exercice 1 du TP3 de ProgC
- * @version 0.1
  * @date 2022-02-18
  * 
  * @copyright Copyright (c) 2022

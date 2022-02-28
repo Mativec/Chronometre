@@ -2,7 +2,6 @@
  * @file ChronoDur.c
  * @author TWARDAWA Yanis & VECCHIO Matias
  * @brief Code du Module Chrono
- * @version 0.1
  * @date 2022-02-18
  * 
  * @copyright Copyright (c) 2022

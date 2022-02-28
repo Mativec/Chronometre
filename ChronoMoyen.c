@@ -1,7 +1,7 @@
 /**
  * @file Chrono.c
  * @author TWARDAWA Yanis & VECCHIO Matias
- 3* @brief Programme pour le TP2 de ProgC
+ * @brief Programme pour le TP2 de ProgC
  * @date 2022-02-18
  * 
  * @copyright Copyright (c) 2022
