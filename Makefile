@@ -17,7 +17,6 @@ Chrono.o: Chrono.c Chrono.h
 
 
 clean:
-	make
 	rm -f *.o
 
 uninstall: clean
